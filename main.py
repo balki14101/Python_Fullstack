@@ -1,6 +1,6 @@
 
 
-from flask import Flask,jsonify,render_template
+from flask import Flask,jsonify,render_template,url_for
 
 app = Flask(__name__)
 
@@ -27,7 +27,9 @@ def signUp():
 ##home page function##
 @app.route('/home')
 def home():
-   return render_template('home.html')          
+   return render_template('demoHtml.html')          
+
+
     
 if __name__ == "__main__":
     app.run(debug=True)
