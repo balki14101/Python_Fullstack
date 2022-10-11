@@ -1,7 +1,21 @@
 from fastapi import FastAPI
 from routes.user import user
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+
+origins = [
+    # "http://localhost:8000",
+    # "http://192.168.155.62:8000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    # allow_methods=["*"],
+    # allow_headers=["*"],
+)
 app.include_router(user)
 
 # @app.get("/")
