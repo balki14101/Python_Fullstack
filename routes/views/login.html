@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Login Page</title>
-
+      <!-- <link href="{{ url_for('static', path='login.css') }}" rel="stylesheet" > -->
     <style>
       body {
         background-image: url("https://img.freepik.com/premium-photo/transportation-logistics-container-cargo-ship-cargo-plane-3d-rendering-illustration_37416-505.jpg?w=1060");
@@ -13,7 +13,7 @@
       }
       @import url("https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap&apos");
       #captchaBackground {
-        height: 200px;
+        height: 220px;
         width: 250px;
         background-color: #2d3748;
         display: flex;
@@ -106,27 +106,23 @@
                         required
                       />
                     </div>
-                    <p class="small pb-lg-2">
+                    <p class="small mb-5 pb-lg-2">
                       <a class="text-white-50" href="#!">Forgot password?</a>
                     </p>
-
-                    <!-- Captcha Area -->
                     <div class="center">
                       <div id="captchaBackground">
                         <canvas id="captcha">captcha text</canvas>
-                        <input id="textBox" type="text" name="text" />
+                        <input id="textBox" type="text" name="text"  />
                         <div id="buttons">
-                          <!-- <input id="submitButton" type="button" required /> -->
-                          <button id="submitButton" type="button">
-                            Submit
-                          </button>
-                          <!-- <button 
+                          <input id="submitButton" type="button" required />
+
+                          <!-- <button
                             id="submitButton"
                             type="button"
                             style="width: initial"
                           > -->
-                          <!-- Submit -->
-                          <!-- </button> -->
+                            Submit
+                          </button>
                           <button id="refreshButton" type="submit">
                             Refresh
                           </button>
@@ -140,20 +136,18 @@
                         onclick="onSubmit"
                         class="btn"
                         style="
-                          background-color: #00000000;
+                          background-color: #800000;
                           color: white;
                           font-weight: bold;
-                          border-radius: 8px;
+                          border-radius: 25px;
                           display: none;
-                          font-size: large;
-                          padding: 8px;
                         "
                         id="submit"
                       >
-                        Login
+                        Create
                       </button>
                     </div>
-                    <!-- <div class="text-center">
+                    <div class="text-center">
                       <button
                         id="submit"
                         class="btn btn-outline-light btn-lg px-5"
@@ -161,7 +155,7 @@
                       >
                         Login
                       </button>
-                    </div> -->
+                    </div>
                   </form>
                 </div>
                 <!-- <form

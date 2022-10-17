@@ -13,7 +13,7 @@ from fastapi.responses import HTMLResponse
 
 
 user = APIRouter() 
-user.mount("/static", StaticFiles(directory="static"), name="static")
+# user.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="views")
 
@@ -59,11 +59,14 @@ def deleteUser(id:str,response:Response):
     response.status_code=status.HTTP_204_NO_CONTENT
     return 'deleted'
 
+###############################################################################################
+
+#get login
 @user.get("/")
 async def login(request: Request):
     return templates.TemplateResponse("login.html",{'request':request})  
 
-
+#post login
 @user.post("/")
 async def login(request: Request,email: str = Form() ,password: str = Form()):
     # email = user_email
@@ -80,10 +83,12 @@ async def login(request: Request,email: str = Form() ,password: str = Form()):
         print('invalid credentials')        
         return templates.TemplateResponse("login.html",{'request':request})        
 
+#get signup
 @user.get("/signUp")
 async def signup_get(request: Request):
     return templates.TemplateResponse("signUp.html",{'request':request}) 
 
+#post signup
 @user.post("/signUp")
 async def signup(request:Request,username:str=Form(),email:str=Form(),password:str=Form()):
     user = User(name=username,email=email,password=password)
@@ -93,7 +98,7 @@ async def signup(request:Request,username:str=Form(),email:str=Form(),password:s
         return templates.TemplateResponse("login.html",{'request':request})
     return {"already exists"}    
     
-
+#get logout
 @user.get('/logout')
 def updateUser(request:Request):
     return templates.TemplateResponse("login.html",{'request':request})

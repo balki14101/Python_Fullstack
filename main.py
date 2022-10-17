@@ -18,6 +18,11 @@ app.add_middleware(
 )
 app.include_router(user)
 
+
+
+
+
+
 # @app.get("/")
 # def index():
 #     return {"message": "Welcome To FastAPI World"}

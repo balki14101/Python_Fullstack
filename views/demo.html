@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <title>Register Now!</title>
+  </head>
+
+  <style>
+    canvas {
+      border: 1px solid #d6d6d6;
+      border-radius: 4px;
+    }
+    button#reload-button {
+      padding: 10px 10px;
+      background-color: #001f3d;
+      font-size: 17px;
+      border: none;
+      border-radius: 5px;
+      color: #bcf5e7;
+      margin-right: 10px;
+    }
+  </style>
+
+  <body>
+    <section class="vh-100">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card shadow-2-strong" style="border-radius: 1rem">
+              <div class="card-body p-5 text-center">
+                <form
+                  class="signup-form"
+                  method="post"
+                  action="#"
+                  th:object="${user}"
+                  th:action="@{register}"
+                  id="demo-form"
+                >
+                  <!-- form header -->
+
+                  <div class="form-header">
+                    <h1>Create Account</h1>
+                  </div>
+
+                  <div id="error" th:text="${error}" class="mb-4"></div>
+                  <div id="success" th:text="${success}" class="mb-4"></div>
+                  <span id="output"></span>
+                  <!-- form body -->
+                  <div class="form-body">
+                    <!-- User name -->
+                    <div class="horizontal-group">
+                      <div class="form-group">
+                        <label for="firstname" class="label-title"
+                          >User Name</label
+                        >
+                        <br />
+                        <input
+                          type="text"
+                          id="username"
+                          class="form-input"
+                          th:field="*{userName}"
+                          oninput="validateUsername();"
+                        />
+                      </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="horizontal-group">
+                      <div class="form-group">
+                        <label for="firstname" class="label-title">Email</label>
+                        <br />
+                        <input
+                          type="text"
+                          id="emailId"
+                          class="form-input"
+                          th:field="*{emailId}"
+                        />
+                      </div>
+                    </div>
+
+                    <label class="label-title">Enter Captcha</label>
+                    <div class="wrapper">
+                      <canvas id="captcha" width="200" height="45"></canvas>
+                      <button id="reload-button" type="button">
+                        <i class="fa-solid fa-arrow-rotate-right"></i>
+                      </button>
+                      <input
+                        type="text"
+                        id="textBox"
+                        placeholder=""
+                        class="form-input mb-8"
+                      />
+                    </div>
+                    <div class="form-group center">
+                      <button
+                        class="btn"
+                        id="submitButton"
+                        type="button"
+                        style="width: initial"
+                      >
+                        Submit CAPTCHA
+                      </button>
+                    </div>
+                    <div class="form-group center">
+                      <button
+                        onclick="onSubmit"
+                        class="btn"
+                        style="
+                          background-color: #800000;
+                          color: white;
+                          font-weight: bold;
+                          border-radius: 25px;
+                          display: none;
+                        "
+                        id="submit"
+                      >
+                        Create
+                      </button>
+                    </div>
+                    <p class="mb-4 label-title">
+                      Already have an account?
+                      <a href="../api/login" class="text-white-50 fw-bold"
+                        >Login</a
+                      >
+                    </p>
+                    <!-- form-footer -->
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Script for range input label -->
+    <script>
+      let captchaText = document.querySelector("#captcha");
+      console.log(captchaText);
+      var ctx = captchaText.getContext("2d");
+      ctx.font = "30px Roboto";
+      ctx.fillStyle = "#000C66";
+
+      let userText = document.querySelector("#textBox");
+      let submitButton = document.querySelector("#submitButton");
+      let output = document.querySelector("#error");
+      output.style.fontSize = "95%";
+      output.style.color = "red";
+      let refreshButton = document.querySelector("#reload-button");
+
+      let alphaNums = [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z",
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p",
+        "q",
+        "r",
+        "s",
+        "t",
+        "u",
+        "v",
+        "w",
+        "x",
+        "y",
+        "z",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+      ];
+      let emptyArr = [];
+
+      for (let i = 1; i <= 7; i++) {
+        emptyArr.push(alphaNums[Math.floor(Math.random() * alphaNums.length)]);
+      }
+      var c = emptyArr.join("");
+      ctx.fillText(
+        emptyArr.join(""),
+        captchaText.width / 4,
+        captchaText.height / 2
+      );
+
+      userText.addEventListener("keyup", function (e) {
+        // Key Code Value of "Enter" Button is 13
+        if (e.keyCode === 13) {
+          if (userText.value === c) {
+            document.getElementById("submit").style.display = "initial";
+            output.innerHTML = "";
+          } else {
+            document.getElementById("submit").style.display = "none";
+            output.innerHTML = "Incorrect, please try again";
+          }
+        }
+      });
+
+      submitButton.addEventListener("click", function () {
+        if (userText.value === c) {
+          document.getElementById("submit").style.display = "initial";
+          output.innerHTML = "";
+        } else {
+          document.getElementById("submit").style.display = "none";
+          output.innerHTML = "Incorrect, please try again";
+        }
+      });
+
+      refreshButton.addEventListener("click", function () {
+        userText.value = "";
+        document.getElementById("submit").style.display = "none";
+        let refreshArr = [];
+        for (let j = 1; j <= 7; j++) {
+          refreshArr.push(
+            alphaNums[Math.floor(Math.random() * alphaNums.length)]
+          );
+        }
+        ctx.clearRect(0, 0, captchaText.width, captchaText.height);
+        c = refreshArr.join("");
+        ctx.fillText(
+          refreshArr.join(""),
+          captchaText.width / 4,
+          captchaText.height / 2
+        );
+        output.innerHTML = "";
+      });
+
+      function onSubmit(token) {
+        document.getElementById("demo-form").submit();
+      }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  </body>
+</html>
