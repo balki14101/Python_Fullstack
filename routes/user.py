@@ -3,14 +3,23 @@ from urllib import request
 from fastapi import APIRouter,Request,Form, Response,status
 from models.user import User 
 from config.database import conn
+from config.database import conn_user
 from schemas.user import userEntity,usersEntity,serializeDict,serializeList
 from bson import ObjectId
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import HTMLResponse
+import json
+from bson import json_util
 
 
+from kafka import KafkaProducer
+
+bootstrap_servers = ['localhost:9092']
+topicName = 'myfirst'
+producer = KafkaProducer(bootstrap_servers = bootstrap_servers)
+producer = KafkaProducer()
 
 user = APIRouter() 
 # user.mount("/static", StaticFiles(directory="static"), name="static")
@@ -70,7 +79,7 @@ async def login(request: Request):
 @user.post("/")
 async def login(request: Request,email: str = Form() ,password: str = Form()):
     # email = user_email
-    # password = user_password    
+    # password = user_password     
     data = conn['users'].find_one({'email':email})
     print(email)
     print(password)
@@ -78,7 +87,14 @@ async def login(request: Request,email: str = Form() ,password: str = Form()):
     if(data['password']==password):
         # return {'email':email,'password':password}
         print('successful')
-        return templates.TemplateResponse("home.html",{'request':request})
+        # for data from socket
+        streaming_data = []
+
+        all_shipments = conn_user['mycol'].find()  
+
+        for i in all_shipments:
+            streaming_data.append(i)
+        return templates.TemplateResponse("home.html",{'request':request,"streaming_data":streaming_data})
     else:
         print('invalid credentials')        
         return templates.TemplateResponse("login.html",{'request':request})        
@@ -86,6 +102,7 @@ async def login(request: Request,email: str = Form() ,password: str = Form()):
 #get signup
 @user.get("/signUp")
 async def signup_get(request: Request):
+    
     return templates.TemplateResponse("signUp.html",{'request':request}) 
 
 #post signup
@@ -95,6 +112,14 @@ async def signup(request:Request,username:str=Form(),email:str=Form(),password:s
     checkEmail = conn['users'].find_one({"email":email})
     if not checkEmail:
         conn['users'].insert_one(user.dict())
+        print(user)     
+
+        ack = producer.send(topicName, json.dumps(user.dict()).encode('utf-8'))
+        # ack = producer.send('orders', json.dumps(user, default=json_util.default).encode('utf-8'))
+        
+        metadata = ack.get()
+        print(metadata.topic)
+        print(metadata.partition)
         return templates.TemplateResponse("login.html",{'request':request})
     return {"already exists"}    
     
@@ -102,6 +127,19 @@ async def signup(request:Request,username:str=Form(),email:str=Form(),password:s
 @user.get('/logout')
 def updateUser(request:Request):
     return templates.TemplateResponse("login.html",{'request':request})
+
+#data_streaming
+@user.get("/datastream", response_class=HTMLResponse)
+async def stream_page(request: Request):
+
+    streaming_data = []
+
+    all_shipments = conn_user['mycol'].find()  
+
+    for i in all_shipments:
+      streaming_data.append(i)
+
+    return templates.TemplateResponse("data.html", {"request": request,"streaming_data":streaming_data})
     
 
 

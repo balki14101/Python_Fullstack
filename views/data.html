@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    table,
+    th,
+    td {
+      border: 1px solid black;
+    }
+  </style>
+  <body>
+    <!-- <h1>Item ID: {{ streaming_data }}</h1> -->
+    <h2>A basic HTML table</h2>
+
+    <table style="width: 100%">
+      <tr>
+        <th>Battery level</th>
+        <th>First_Sensor_temperature</th>
+        <th>Route_From</th>
+        <th>Route_To</th>
+      </tr>
+      {% for data in streaming_data %}
+      <tr>
+        <td>{{data.Battery_Level}}</td>
+        <td>{{data.First_Sensor_temperature}}</td>
+        <td>{{data.Route_From}}</td>
+        <td>{{data.Route_To}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <p>To understand the example better, we have added borders to the table.</p>
+  </body>
+</html>

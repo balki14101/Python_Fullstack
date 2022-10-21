@@ -86,7 +86,7 @@
         <div class="collapse navbar-collapse" id="myNavbar">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
+            <li><a href="#datastream">About</a></li>
             <li><a href="#">Projects</a></li>
             <li><a href="#">Contact</a></li>
           </ul>
@@ -101,16 +101,10 @@
       </div>
     </nav>
 
-    <div class="container-fluid" style="color: #f1f1f1">
-      <!-- <div
-      class="card bg-dark text-white"
-      style="border-radius: 1rem; --bs-bg-opacity: 0.6"
-    > -->
-      <!-- <div class="col-sm-2 sidenav">
-          <p><a href="#">Link</a></p>
-          <p><a href="#">Link</a></p>
-          <p><a href="#">Link</a></p>
-        </div> -->
+    <div
+      class="container-fluid"
+      style="color: #ffffff; background-color: rgba(0, 0, 0, 0.5)"
+    >
       <div class="col text-center bg-dark">
         <!-- <div
             class="card bg-dark text-white"
@@ -128,46 +122,44 @@
           nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
           consequat.
         </p>
+
         <hr />
-        <h3>Content</h3>
+        <!-- <h3>Content</h3>
         <p>Lorem ipsum...</p>
+        <hr /> -->
       </div>
-      <!-- <div class="col-sm-2 sidenav">
-          <div class="well">
-            <p>ADS</p>
-          </div>
-          <div class="well">
-            <p>ADS</p>
-          </div>
-        </div> -->
+      <div id="datastream" style="text-align: center">
+        <h3 style="text-align: center">Data Streams</h3>
+
+        <table style="width: 100%; text-align: center">
+          <tr>
+            <th style="text-align: center; font-size: large; padding: 4px">
+              Battery level
+            </th>
+            <th style="text-align: center; font-size: large; padding: 4px">
+              First_Sensor_temperature
+            </th>
+            <th style="text-align: center; font-size: large; padding: 4px">
+              Route_From
+            </th>
+            <th style="text-align: center; font-size: large; padding: 4px">
+              Route_To
+            </th>
+          </tr>
+          {% for data in streaming_data %}
+          <tr>
+            <td style="padding: 4px">{{data.Battery_Level}}</td>
+            <td style="padding: 4px">{{data.First_Sensor_temperature}}</td>
+            <td style="padding: 4px">{{data.Route_From}}</td>
+            <td style="padding: 4px">{{data.Route_To}}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
     </div>
+
     <!-- </div> -->
 
-    <!-- <div class="container-fluid text-center">
-      <div class="row content">
-        <div class="card bg-dark text-white" style="--bs-bg-opacity: 0.6"> -->
-    <!-- <div class="col-sm-2 sidenav">
-          <p><a href="#">Link</a></p>
-          <p><a href="#">Link</a></p>
-          <p><a href="#">Link</a></p>
-        </div> -->
-    <!-- <div class="col text-left">
-            <h1>Welcome</h1>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat
-              cupidatat non proident, sunt in culpa qui officia deserunt mollit
-              anim id est laborum consectetur adipiscing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-              minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-              aliquip ex ea commodo consequat.
-            </p>
-            <hr />
-            <h3>Test</h3>
-            <p>Lorem ipsum...</p>
-          </div> -->
     <!-- <div class="col-sm-2 sidenav">
           <div class="well">
             <p>ADS</p>
